@@ -89,6 +89,9 @@ type family BodyTypes' c api :: [*] where
   BodyTypes' c (Verb verb b cs (Headers hdrs a)) = BodyTypes' c (Verb verb b cs a)
   BodyTypes' c (Verb verb b cs NoContent) = '[]
   BodyTypes' c (Verb verb b cs a) = AddBodyType c cs a '[]
+  BodyTypes' c (UVerb verb cs (Headers hdrs a)) = BodyTypes' c (UVerb verb cs a)
+  BodyTypes' c (UVerb verb cs NoContent) = '[]
+  BodyTypes' c (UVerb verb cs a) = AddBodyType c cs a '[]
   BodyTypes' c (ReqBody' mods cs a :> api) = AddBodyType c cs a (BodyTypes' c api)
   BodyTypes' c (e :> api) = BodyTypes' c api
   BodyTypes' c (a :<|> b) = AppendList (BodyTypes' c a) (BodyTypes' c b)
